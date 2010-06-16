@@ -30,7 +30,6 @@ The root page (/)
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    require YAML;
     $c->session->{id} ||= new_uuid_string();
 
     $c->stash->{template} = 'foo.tt';
