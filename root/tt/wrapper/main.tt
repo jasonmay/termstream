@@ -1,0 +1,6 @@
+<html>
+<title>TermStream</title>
+<body style="background-color: #eef">
+[% content %]
+</body>
+</html>
