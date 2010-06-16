@@ -1,6 +1,74 @@
 <html>
-<title>TermStream</title>
-<body style="background-color: #eef">
+<head>
+<title>Foo</title>
+<link href="/static/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/static/js/jquery.js"></script>
+<script language="javascript">
+var INTERVAL_ID;
+
+// two different locks: client side and server side.
+//
+// First level lock: If we're downloading the ajax response,
+// prevent beginning a download from a succeeding timer process.
+//
+// Second level lock: When processing the terminal screen, don't
+// let any other webserver processes begin. Without this, the
+// terminal frames will not cache properly.
+
+var downloading;
+start();
+
+function termcast_cb(data) {
+    downloading = 1;
+    if (!data) { alert(":("); return; }
+    if (data['html'].length > 0) {
+        $('#termcast').html(data['html']);
+    }
+    downloading = 0;
+}
+
+function update_termcast() {
+    if (downloading) return;
+    downloading = 1;
+    $.ajax({
+        url: 'http://tc.jarsonmar.org/',
+        dataType: 'jsonp',
+        jsonp: 'termcast_cb'
+    });
+}
+
+function start() {
+    //update_termcast(); return;
+    INTERVAL_ID = setInterval('update_termcast()', 300);
+}
+
+function stop() {
+    clearInterval(INTERVAL_ID);
+}
+</script>
+<style type="text/css">
+#container {
+    font-family: monaco, consolas, lucida console, monospace;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: black;
+    font-size: 80%;
+    width: 50em;
+}
+
+#termcast {
+    border: solid 1px white;
+    height: 60ex;
+    overflow: auto;
+}
+</style>
+</head>
+<body>
+<h1>TermStream</h1>
+<a href="">Sign up</a><br />
 [% content %]
 </body>
 </html>
+

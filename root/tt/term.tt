@@ -1,0 +1,6 @@
+<div id="container">
+<div id="termcast">
+</div>
+</div>
+<button id="start_termcast">Start</button>
+<button id="stop_termcast">Stop</button>

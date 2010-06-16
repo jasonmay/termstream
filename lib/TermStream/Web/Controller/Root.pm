@@ -32,7 +32,7 @@ sub index :Path :Args(0) {
 
     $c->session->{id} ||= new_uuid_string();
 
-    $c->stash->{template} = 'foo.tt';
+    $c->stash->{template} = 'front.tt';
     $c->forward( $c->view('TT') );
 
     # Hello World
